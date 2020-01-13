@@ -18,3 +18,4 @@ For register allocation we used basic allocation strategy (spill) with kind of p
 5. r11 is the frame pointer.
 6. r4 serves as a heap pointer.
 
+LABELs and FLOATs not yet implemented.
