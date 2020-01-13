@@ -19,3 +19,4 @@ For register allocation we used basic allocation strategy (spill) with kind of p
 6. r4 serves as a heap pointer.
 
 LABELs and FLOATs not yet implemented.
+
