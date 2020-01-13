@@ -20,3 +20,4 @@ For register allocation we used basic allocation strategy (spill) with kind of p
 
 LABELs and FLOATs not yet implemented.
 
+Python is cool and at nearly 6am, I feel as python GURU :sunglasses:
