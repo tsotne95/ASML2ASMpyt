@@ -10,10 +10,10 @@ def main():
         sys.exit("Insufficient arguments")
     if sys.argv[1]=='-h':
         print("usage: main.py [-i] [-f file] [-io file] [-fo]")
-        print("-i       -- read asml data from standard input, generate asm to standard output")
-        print("-f file  -- read asml data from .asml file, generate asm to standard output")
-        print("-io file -- read asml data from standard input, generate asm in argument file")
-        print("-fo file -- read asml .asml file, generate asm to file.s, in same directory")
+        print("-i            -- read asml data from standard input, generate asm to standard output")
+        print("-f file       -- read asml data from .asml file, generate asm to standard output")
+        print("-io file      -- read asml data from standard input, generate asm in argument file")
+        print("-fo file file -- read asml .asml file, generate asm to outputFile")
     elif sys.argv[1]=='-i':
         data=""
         for line in sys.stdin:
@@ -45,7 +45,7 @@ def main():
             with open(sys.argv[2],'w') as file:
                 data=file.write(t.generateAsm())
     elif sys.argv[1]=='-fo':
-        if len(sys.argv)<3:
+        if len(sys.argv)<4:
             sys.exit("Insufficient arguments")
         else:
             with open(sys.argv[2],'r') as file:
@@ -53,7 +53,7 @@ def main():
             t=asmlTree.asmlTree(data)
             t.registerAllocation_Spill()
             #print(t) #to print AST uncoment this line
-            newFile=os.path.splitext(sys.argv[2])[0]+".s"
+            newFile=sys.argv[3]
             with open(newFile,'w') as file:
                 data=file.write(t.generateAsm())   
 
