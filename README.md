@@ -6,7 +6,7 @@ usage: main.py [-i] [-f file] [-io file] [-fo]
 -i       -- read asml data from standard input, generate asm to standard output
 -f file  -- read asml data from .asml file, generate asm to standard output
 -io file -- read asml data from standard input, generate asm in argument file
--fo file -- read asml .asml file, generate asm to file.s, in same directory
+-fo file file -- read asml .asml file, generate asm to outputFile
 ```
 For register allocation we used basic allocation strategy (spill) with kind of policies:
 1. The registers used by the parameters are the registers from r0 to r3.
