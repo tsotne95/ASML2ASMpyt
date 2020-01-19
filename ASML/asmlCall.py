@@ -11,7 +11,7 @@ class asmlCall(asmlExp):
         self.params=[]
         for i in range(2,len(data)):
             optype=None
-            if re.match(r'[0-9]+',data[2]) is not None:
+            if re.match(r'[0-9]+',data[i]) is not None:
                 optype=operType.IMM
             else:
                 optype=operType.VAR
@@ -43,7 +43,7 @@ class asmlCall(asmlExp):
             if i<4: #we load them in the registers r0-r3
                 if p.isVariable():
                     if p.getName().startswith("r"): # register
-                        code += "\tldr r" + str(i) + ", " + p.getName() + "\n"
+                        code += "\tldr r" + str(i) + ", [" + p.getName() + "]\n"
                     else: #stack
                         code += "\tldr r" + str(i) + ", " + p.getName() + "\n"
                 else: #immediate value

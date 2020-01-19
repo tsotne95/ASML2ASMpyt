@@ -30,6 +30,6 @@ class asmlNew(asmlExp):
 
     def generateAsm(self):
         code = ""
-        code += "\tldr r12, r4\n" #allows to return the allocation start address
+        code += "\tldr r12, [r4]\n" #allows to return the allocation start address
         code += "\tsub r4, r4, #" + str(self.op) + "\n" #moving the heap pointer
         return code

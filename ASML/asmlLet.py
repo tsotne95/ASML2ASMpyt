@@ -57,6 +57,7 @@ class asmlLet(asmlExp):
     def getOpersCon(self,type):
         a=[]
         a.append(self.op1)
+        #print("letis getoperCOn",self.op2)
         a=a+self.op2.getOpersCon(type)
         return a
 
@@ -67,13 +68,13 @@ class asmlLet(asmlExp):
         code = ""
         code += self.op2.generateAsm()
         if self.op1.getName().startswith("r"):
-            code += "\tldr " + str(self.op1) + ", r12\n"
+            code += "\tldr " + str(self.op1) + ", [r12]\n"
         else:
             #put r12 in the memory location of op1
             opName = self.op1.getName()
             opName=opName.replace("[", "")
             opName=opName.replace("]","")
             data=opName.split(", ")
-            code += "\tstr r12, " + "fp" + ", " + data[1] + "\n"
+            code += "\tstr r12, " + "[fp" + ", " + data[1] + "]\n"
 
         return code

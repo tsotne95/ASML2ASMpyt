@@ -44,7 +44,7 @@ class asmlMem(asmlExp):
     def generateAsm(self):
         code=""
         if self.op1.getName().startswith("r") and self.op2.getName().startswith("r"): #everything is in the registers
-            code += "\tadd r12, " + str(self.op1) + " " + str(self.op2) + "\n"
+            code += "\tadd r12, " + str(self.op1) + ", " + str(self.op2) + "\n"
         else:
             if not self.op1.getName().startswith("r") and not self.op2.getName().startswith("r"): #op1 and op2 must be loaded into the register
                 if self.op1.isVariable():
@@ -76,10 +76,11 @@ class asmlMem(asmlExp):
         #r12 has memory address
         if self.op3 is not None: #we assign the value to the memory area
             if self.op3.getName().startswith("r"): 
-                code += "\tldr " + str(self.op3) + ", r4, r12\n" #assign
+                code += "\tldr " + str(self.op3) + ", [r4, r12]\n" #assign
             else:
                 if self.op3.isVariable(): #in memory
-                    code += "\tstr " + self.op2.getName() + ", r4, r12\n" #assign
+                    code += "\tldr r9, "+str(self.op3)+'\n'
+                    code += "\tstr r9" + ", [r4, r12]\n" #assign
                 else: #immediate value
-                    code += "\tstr " + str(self.op3) + ", r4, r12\n" # assign
+                    code += "\tstr " + str(self.op3) + ", [r4, r12]\n" # assign
         return code
