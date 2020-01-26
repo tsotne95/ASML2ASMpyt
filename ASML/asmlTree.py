@@ -77,7 +77,7 @@ class asmlTree:
     def generateAsm(self):
         code = ""
         code += "\t.text\n"
-        code += "\t.global main\n"
+        code += "\t.global _start\n"
         for a in self.labels:
             code += a.generateAsm()
         return code

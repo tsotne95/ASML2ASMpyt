@@ -68,7 +68,7 @@ class asmlLet(asmlExp):
         code = ""
         code += self.op2.generateAsm()
         if self.op1.getName().startswith("r"):
-            code += "\tldr " + str(self.op1) + ", [r12]\n"
+            code += "\tmov " + str(self.op1) + ", r12\n"
         else:
             #put r12 in the memory location of op1
             opName = self.op1.getName()

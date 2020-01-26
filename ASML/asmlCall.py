@@ -43,7 +43,7 @@ class asmlCall(asmlExp):
             if i<4: #we load them in the registers r0-r3
                 if p.isVariable():
                     if p.getName().startswith("r"): # register
-                        code += "\tldr r" + str(i) + ", [" + p.getName() + "]\n"
+                        code += "\tmov r" + str(i) + ", " + p.getName() + "\n"
                     else: #stack
                         code += "\tldr r" + str(i) + ", " + p.getName() + "\n"
                 else: #immediate value

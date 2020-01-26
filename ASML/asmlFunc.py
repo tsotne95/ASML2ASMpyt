@@ -82,7 +82,7 @@ class asmlFunc(asmlBranch,asmlFunDef):
     def generateAsm(self):
         code = ""
         if self.name == "_": #main
-            code += "main:\n"
+            code += "_start:\n"
             code += "\tadd r4, sp, #0\n" #r4 = heap pointer
             code += "\tsub sp, sp, #1000\n" # heap
             code += "\tpush {fp, lr}\n"
@@ -93,8 +93,6 @@ class asmlFunc(asmlBranch,asmlFunDef):
             code += "\tstr fp, [sp, #-4]\n"
             code += "\tadd fp, sp, #0\n"
             code += "\tsub sp, sp, #" + str(abs(4- self.stackcnt)) + "\n" #place for variables that extend + 4 (fp)
-            # save the registers r5-r10 and r12-r13
-            code += "\tpush {r5-r10,r12-r13}\n"
 
         # code to execute
         for exp in self.expressions:
@@ -102,12 +100,18 @@ class asmlFunc(asmlBranch,asmlFunDef):
             code += exp.generateAsm()
 
         if not (self.name==("_")):
+            #save the registers r5-r10 and r12-r13
+            code += "\tpush {r5-r10,r12-r13}\n"
             #restoration of registers
             code += "\tpop {r5-r10,r12-r13}\n"
 
         #end
         code += "\tldr fp, [sp], #4\n" # restoration of fp
-        code += "\tbx lr\n"
+
+        if self.name==("_"):
+            code +="\tbl min_caml_exit\n"
+        else:
+            code += "\tbx lr\n"
 
         return code
 

@@ -6,7 +6,7 @@ import re
 class asmlNew(asmlExp):
     def __init__(self,exp):
         data=exp.split(" ")
-        data=exp[1]
+        data=data[1]
         optype=None
         if re.match(r'[0-9]+',data) is not None:
             optype=operType.IMM

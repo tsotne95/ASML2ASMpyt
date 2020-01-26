@@ -34,7 +34,7 @@ class asmlOper(asmlExp):
 
     def generateAsm(self):
         if self.name.startswith("r"):
-            return "\tldr r12, [" + self.name + "]\n"
+            return "\tmov r12, " + self.name + "\n"
         else: #manage it if immediate value or save it in memory
             if self.name.startswith("["): #memory
                 data=[]

@@ -26,6 +26,7 @@ class asmlIf(asmlBranch,asmlExp):
         self.expElse=[]
 
     def addInstruction(self,expression):
+        #print(self.constructionThen,expression)
         if self.constructionThen:
             self.expThen.append(expression)
         else:
@@ -55,10 +56,10 @@ class asmlIf(asmlBranch,asmlExp):
             a.append(self.op2)
 
         for exp in self.expThen:
-            a=a+exp.getOpers()
+            a=a+exp.getOpersCon(type)
         
         for exp in self.expElse:
-            a=a+exp.getOpers()
+            a=a+exp.getOpersCon(type)
             
         return a
 
@@ -66,31 +67,31 @@ class asmlIf(asmlBranch,asmlExp):
         #if
         code = ""
         if self.op1.getName().startswith("r") and self.op2.getName().startswith("r"): #everything is in the registers
-            code += "\tcmp " + str(self.op1) + " " + str(self.op2) + "\n"
+            code += "\tcmp " + str(self.op1) + ", " + str(self.op2) + "\n"
         else:
             if not self.op1.getName().startswith("r") and not self.op2.getName().startswith("r"): #op1 and op2 must be loaded into the register
                 if self.op1.isVariable():
                     code += "\tldr r9, " + str(self.op1) + "\n"
                 else: # immediate value
-                    code += "\tmov r9, " + str(self.op1) + "\n"
+                    code += "\tmov r9, #" + str(self.op1) + "\n"
 
                 if self.op2.isVariable():
                     code += "\tldr r10, " + str(self.op2) + "\n"
                 else: # immediate value
-                    code += "\tmov r10, " + str(self.op2) + "\n"
+                    code += "\tmov r10, #" + str(self.op2) + "\n"
                 
                 code += "\tcmp r9, r10\n"
             elif not self.op1.getName().startswith("r"): #op1 must be loaded into memory
                 if self.op1.isVariable():
                     code += "\tldr r9, " + str(self.op1) + "\n"
                 else: #immediate value
-                    code += "\tmov r9, " + str(self.op1) + "\n"  
+                    code += "\tmov r9, #" + str(self.op1) + "\n"  
                 code += "\tcmp r10, " + str(self.op2) + "\n"
             else: #op2 must be loaded into memory
                 if self.op2.isVariable():
                     code += "\tldr r10, " + str(self.op2) + "\n"
                 else: #immediate value
-                    code += "\tmov r10, " + str(self.op2) + "\n"
+                    code += "\tmov r10, #" + str(self.op2) + "\n"
                 code += "\tcmp " + str(self.op1) + ", r10\n"
         
         #floats are not yet managed
@@ -106,13 +107,13 @@ class asmlIf(asmlBranch,asmlExp):
             code += "\tble LAB_E_" + str(id(self)) + "\n"
 
         #then
+        code += "LAB_T" + str(id(self)) + ":\n"
+
         for exp in self.expThen:
             code += exp.generateAsm()
 
         code += "LAB_E_" + str(id(self)) + ":\n"
         for exp in self.expElse:
             code += exp.generateAsm()
-
-        code += "LAB_T" + str(id(self)) + ":\n"
 
         return code
