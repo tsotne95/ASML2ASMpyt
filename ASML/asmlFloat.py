@@ -5,7 +5,7 @@ from .asmlOper import asmlOper
 
 class asmlFloat(asmlFunDef):
     def __init__(self, instruction):
-        data = instruction.split(" ")
+        print(instruction,data)
         self.op = asmlOper(data[1], operType.VAR)
         self.value = self.IEEE754(float(data[3]))
 

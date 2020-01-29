@@ -1,6 +1,6 @@
 class asmlBranch:
     def __init__(self):
-        self.parent=None
+        pass
 
     def addInstruction(self,expression):
         pass
@@ -10,3 +10,5 @@ class asmlBranch:
 
     def setParent(self,parent):
         self.parent = parent
+    
+asmlBranch.parent=asmlBranch()

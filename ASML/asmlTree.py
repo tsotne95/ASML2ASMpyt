@@ -24,7 +24,7 @@ class asmlTree:
         instruction=instruction.strip()
         instrType=instructType.getTypeInstruction(instruction)
 
-        #print(instruction,instrType)
+        #print(currentBranch,instruction,instrType)
 
         if instrType==instructType.LET_FUN:
             a_fun=asmlFunc(instruction)
