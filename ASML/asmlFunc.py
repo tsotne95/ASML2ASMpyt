@@ -2,6 +2,7 @@ from .asmlBranch import asmlBranch
 from .operType import operType
 from .asmlOper import asmlOper
 from .asmlFunDef import asmlFunDef
+from .asmlIf import asmlIf
 import re
 
 class asmlFunc(asmlBranch,asmlFunDef):
@@ -98,6 +99,9 @@ class asmlFunc(asmlBranch,asmlFunDef):
         for exp in self.expressions:
             #print("st\n",exp,"\nend")
             code += exp.generateAsm()
+            if isinstance(exp,asmlIf):
+                code += exp.exLabel+":\n"
+            
 
         if not (self.name==("_")):
             #save the registers r5-r10 and r12-r13

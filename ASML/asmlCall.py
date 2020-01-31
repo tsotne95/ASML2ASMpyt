@@ -47,7 +47,7 @@ class asmlCall(asmlExp):
                     else: #stack
                         code += "\tldr r" + str(i) + ", " + p.getName() + "\n"
                 else: #immediate value
-                    code += "\tmov r" + str(i) + ", #" + p.getName() + "\n"
+                    code += "\tldr r" + str(i) + ", =#" + p.getName() + "\n"
             else: #otherwise into stack
                 if p.isVariable():
                     if p.getName().startswith("r"): #register
@@ -56,7 +56,7 @@ class asmlCall(asmlExp):
                         code += "\tldr r12, sp, " + p.getName() + "\n"
                         code += "\tpush {r12}\n"
                 else: # immediate value
-                    code += "\tmov r12, #" + p.getName() + "\n"
+                    code += "\tldr r12, =#" + p.getName() + "\n"
                     code += "\tpush {r12}\n"
         #calling
         code += "\tbl " + self.funcLabel + "\n"

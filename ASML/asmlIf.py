@@ -7,6 +7,8 @@ import re
 class asmlIf(asmlBranch,asmlExp):
     def __init__(self, instruction):
         asmlBranch.__init__(self)
+        asmlIf.areInIf=True
+        self.exLabel=None
         self.constructionThen=True #to indicate if we are in the then or else
         data=instruction.split(" ")
         optype=None
@@ -73,25 +75,25 @@ class asmlIf(asmlBranch,asmlExp):
                 if self.op1.isVariable():
                     code += "\tldr r9, " + str(self.op1) + "\n"
                 else: # immediate value
-                    code += "\tmov r9, #" + str(self.op1) + "\n"
+                    code += "\tldr r9, =#" + str(self.op1) + "\n"
 
                 if self.op2.isVariable():
                     code += "\tldr r10, " + str(self.op2) + "\n"
                 else: # immediate value
-                    code += "\tmov r10, #" + str(self.op2) + "\n"
+                    code += "\tldr r10, =#" + str(self.op2) + "\n"
                 
                 code += "\tcmp r9, r10\n"
             elif not self.op1.getName().startswith("r"): #op1 must be loaded into memory
                 if self.op1.isVariable():
                     code += "\tldr r9, " + str(self.op1) + "\n"
                 else: #immediate value
-                    code += "\tmov r9, #" + str(self.op1) + "\n"  
+                    code += "\tldr r9, =#" + str(self.op1) + "\n"  
                 code += "\tcmp r10, " + str(self.op2) + "\n"
             else: #op2 must be loaded into memory
                 if self.op2.isVariable():
                     code += "\tldr r10, " + str(self.op2) + "\n"
                 else: #immediate value
-                    code += "\tmov r10, #" + str(self.op2) + "\n"
+                    code += "\tldr r10, =#" + str(self.op2) + "\n"
                 code += "\tcmp " + str(self.op1) + ", r10\n"
         
         #floats are not yet managed
@@ -111,9 +113,15 @@ class asmlIf(asmlBranch,asmlExp):
 
         for exp in self.expThen:
             code += exp.generateAsm()
+        
+        self.exLabel="lab_ex"+str(id(self))
+
+        code += "\tb "+self.exLabel+"\n"
 
         code += "LAB_E_" + str(id(self)) + ":\n"
         for exp in self.expElse:
+            #print(exp)
             code += exp.generateAsm()
+        code += "\tb "+self.exLabel+"\n"
 
         return code

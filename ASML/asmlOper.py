@@ -43,5 +43,6 @@ class asmlOper(asmlExp):
                 data=nameRep.split(", ")
                 return "\tldr r12, " + self.name + "\n"
             else: #immediate value
-                print("tso",self.name)
-                return "\tmov r12, #" + self.name + "\n"
+                imVal=self.name.split(" ")
+                imVal=imVal[0]
+                return "\tldr r12, =#" + imVal + "\n"

@@ -36,7 +36,9 @@ class asmlTree:
         elif instrType==instructType.IF:
             a_if=asmlIf(instruction)
             currentBranch.addInstruction(a_if)
+            tmp=currentBranch
             currentBranch=a_if
+            currentBranch.setParent(tmp)
         elif instrType==instructType.ELSE:
             currentBranch.setConstructionThen(False)
         elif instrType==instructType.FI:

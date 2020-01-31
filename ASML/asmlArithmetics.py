@@ -44,23 +44,23 @@ class asmlArithmetics(asmlExp):
                 if self.op1.isVariable():
                     code += "\tldr r9, " + str(self.op1) + "\n"
                 else:
-                    code += "\tmov r9, #" + str(self.op1) + "\n"
+                    code += "\tldr r9, =#" + str(self.op1) + "\n"
                 if self.op2.isVariable():
                     code += "\tldr r10, " + str(self.op2) + "\n"
                 else:
-                    code += "\tmov r10, #" + str(self.op2) + "\n"
+                    code += "\tldr r10, =#" + str(self.op2) + "\n"
                 code += "\t" + self.operator + " r12, r9, r10\n"
             elif not self.op1.getName().startswith("r"): #op1 must be loaded into memory
                 if self.op1.isVariable():
                     code += "\tldr r9, " + str(self.op1) + "\n"
                 else:
-                    code += "\tmov r9, #" + str(self.op1) + "\n"
+                    code += "\tldr r9, =#" + str(self.op1) + "\n"
                 code += "\t" + self.operator + " r12, r10, " + str(self.op2) + "\n"
             else: # op2 must be loaded into memory
                 if self.op2.isVariable():
                     code += "\tldr r10, " + str(self.op2) + "\n"
                 else:
-                    code += "\tmov r10, #" + str(self.op2) + "\n"
+                    code += "\tldr r10, =#" + str(self.op2) + "\n"
                 code += "\t" + self.operator + " r12, " + str(self.op1) + ", r10\n"
         return code
 
